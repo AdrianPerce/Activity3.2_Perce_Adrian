@@ -155,11 +155,13 @@ VALUES
     (9, 9, 109),  -- Leomord has Blade Armor
     (10, 10, 110);  -- Chou has Feather of Heaven
 
---3 
+--3 Add another column in the item table named item_price. Set the column Price data type to Decimal with 2 decimal points.
+
 ALTER TABLE Item
 ADD item_price DECIMAL (10,2);
 
---4 
+--4 Update the state of hero 1 to inactive. Delete the item associated with hero 1.
+
 UPDATE Hero
 SET is_active = 'false'
 WHERE hero_id = 1;
@@ -167,13 +169,24 @@ WHERE hero_id = 1;
 DELETE FROM HeroItem 
 WHERE hero_id = 1;
 
---5 
+--5 List the player names and their corresponding hero names that are actively in use during gameplay, excluding those with inactive heroes.
+
 SELECT p.player_name, h.hero_name
 FROM Player p
 JOIN Hero h ON p.hero_id = h.hero_id
 WHERE h.is_active = 'true';
 
---6 
+--6 Provide a list of heroes classified as archers.
+
 SELECT DISTINCT Hero.hero_name
 FROM Hero
 WHERE class_id IN (104,105);
+
+--7 Retrieve the average player level for each class, arranging them in descending order from the highest level to the lowest.
+
+SELECT AVG(p.player_level) AS average_level, c.class_name
+FROM Player p
+JOIN Hero h ON p.hero_id = h.hero_id
+JOIN Class c ON h.class_id = c.class_id
+GROUP BY c.class_name
+ORDER BY average_level DESC;
